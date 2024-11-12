@@ -8,13 +8,19 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+
     function posts(){
         $posts = DB::table('posts')->orderBy('id','desc')->simplePaginate(7);
+	$post['header_title'] = "Unblurred: Information Crystal Clear";
         return view('reader_posts',compact('posts'));
     }
     function each_post(string $id){
-        $post = DB::table('posts')->where('id','=',$id)->get();
-        return view('eachblog.template',compact('post'));
+    $post = DB::table('posts')->where('id',$id)->get();
+	$meta_desc = substr($post[0]->article,0,157).'...';
+	$header_title = $post[0]->title;
+	$random_num_less_than_total_posts = rand(1,count(DB::table('posts')->get()));
+	$random_post = DB::table('posts')->where('id','=',$random_num_less_than_total_posts)->get();
+        return view('eachblog.template',compact('post','header_title','random_post','meta_desc'));
     }
 
     function post(Request $req){

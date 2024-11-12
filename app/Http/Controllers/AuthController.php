@@ -101,4 +101,14 @@ $id = $posts[0]->id;
     return redirect()->route('admin.panel')->with('status','Your Biomini link successfully deleted');
 
 }
+public function logout(Request $request){
+    if(Auth::check()){
+        Auth::logout();
+        $request->session()->invalidate();
+ 
+        $request->session()->regenerateToken();
+        return redirect('loginView');
+    }
+
+}
 }

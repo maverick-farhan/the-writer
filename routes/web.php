@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [PostController::class,'posts'])->name('home');
+Route::get('/read-post/{id}',[PostController::class,'each_post'])->name('read-post');
 
 Route::get('/about', function () {
     return view('about');
 })->name('aboutus');
 
-Route::get('/read-post/{id}',[PostController::class,'each_post'])->name('read-post');
 
 Route::get('/notification',function(){
     return view('notification');
@@ -42,3 +42,9 @@ Route::get('/admin/editor',function(){
 Route::get('/admin/delete/{id}',[AuthController::class, 'delete'])->name('delete')->middleware(mdware::class);
 Route::get('/admin/editPost/{id}',[AuthController::class,'editPost'])->name('edit.post')->middleware(mdware::class);
 Route::put('/admin/update/{id}',[AuthController::class,'update'])->name('edit.done')->middleware(mdware::class);
+
+Route::get('/admin/logout',[AuthController::class, 'logout'])->name('logout')->middleware(mdware::class);
+
+Route::fallback(function(){
+return response()->view('404',[],404);
+});
